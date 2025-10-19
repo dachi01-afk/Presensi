@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('presensi_dosens', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('dosen_id')->constrained('dosens')->onUpdate('cascade')->onDelete('restrict');
+            $table->date('tanggal');
+            $table->dateTime('jam_masuk')->nullable();
+            $table->dateTime('jam_pulang')->nullable();
+            $table->enum('status', ['hadir', 'izin', 'sakit', 'alpha'])->default('hadir');
+            $table->string('keterangan');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('presensi_dosens');
+    }
+};
