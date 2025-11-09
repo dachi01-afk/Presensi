@@ -97,7 +97,7 @@
 
                 {{-- data tabel --}}
                 <div class="w-full overflow-x-auto">
-                    <table id="jadwalKuliahTableDashboard" class="display min-w-full border border-gray-200">
+                    <table id="jadwalKuliahTableAdminDashboard" class="display min-w-full border border-gray-200">
                         <thead class="bg-blue-600 text-white">
                             <tr>
                                 <th class="px-4 py-2 text-center">Dosen</th>
@@ -143,7 +143,7 @@
         @push('scripts')
             <script>
                 $(document).ready(function() {
-                    $('#jadwalKuliahTableDashboard').DataTable({
+                    $('#jadwalKuliahTableAdminDashboard').DataTable({
                         responsive: true,
                         autoWidth: false,
                         scrollX: true
