@@ -27,7 +27,7 @@
 
         <!-- Presensi -->
         <li>
-            <a href="{{ route('mahasiswa.presensi_mahasiswa') }}"
+            <a href="{{ route('presensi_mahasiswa.index') }}"
                 class="sidebar-link flex items-center p-2 text-white hover:bg-kampus-utama rounded-lg
             {{ request()->routeIs('mahasiswa.presensi_mahasiswa') ? 'bg-kampus-utama text-white' : 'text-white hover:bg-kampus-utama' }}">
                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

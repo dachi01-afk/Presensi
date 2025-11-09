@@ -93,7 +93,7 @@
                                     <img class="w-8 h-8 rounded-full"
                                         src="https://placehold.co/32x32/1e40af/ffffff?text=U" alt="Foto Profil">
                                     <span class="text-sm font-medium text-gray-900 hidden md:inline">
-                                        {{ Auth::user()->name ?? 'Mahasiswa' }}
+                                        {{ Auth::user()->mahasiswa->nama_mahasiswa ?? 'Mahasiswa' }}
                                     </span>
                                     <svg class="fill-current h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">

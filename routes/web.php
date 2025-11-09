@@ -100,8 +100,10 @@ Route::prefix('mahasiswa')->middleware(['auth', 'role:mahasiswa'])->group(functi
         ->name('mahasiswa.data_matakuliah');
 
     // presensi mahasiswa
-    Route::get('/presensi_mahasiswa',                    [MahasiswaPresensiController::class, 'index'])
-        ->name('mahasiswa.presensi_mahasiswa');
+    Route::prefix('/presensi_mahasiswa')->name('presensi_mahasiswa.')->group(function () {
+        Route::get('/',       [MahasiswaPresensiController::class, 'index'])->name('index');
+        Route::post('/store',   [MahasiswaPresensiController::class, 'store'])->name('store');
+    });
 
     // riwayat presensi
     Route::get('/riwayat_presensi',                    [RiwayatPresensiController::class, 'index'])

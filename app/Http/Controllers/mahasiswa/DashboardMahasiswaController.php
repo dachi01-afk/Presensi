@@ -2,42 +2,50 @@
 
 namespace App\Http\Controllers\mahasiswa;
 
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
+use App\Models\Mahasiswa;
 use App\Models\Dosen;
 use App\Models\Kelas;
-use App\Models\Mahasiswa;
 use App\Models\MataKuliah;
-use App\Models\JadwalKuliah;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\JadwalMahasiswa;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardMahasiswaController extends Controller
 {
     public function index()
     {
-        // Hitung total data
+        // Ambil user yang sedang login
+        $user = Auth::user();
+
+        // Ambil data mahasiswa berdasarkan user_id
+        $mahasiswa = Mahasiswa::where('user_id', $user->id)->first();
+
+        // Statistik cepat
         $totalMahasiswa = Mahasiswa::count();
         $totalDosen = Dosen::count();
-        $totalMataKuliah = MataKuliah::count();
         $totalKelas = Kelas::count();
+        $totalMataKuliah = MataKuliah::count();
 
-        // Ambil hari ini (misalnya "Senin", "Selasa", dll)
-        $hariIni = Carbon::now()->locale('id')->dayName;
-        $hariIni = ucfirst($hariIni); // kapital huruf pertama biar sesuai di DB
+        // Hari ini (Senin, Selasa, dst)
+        $hariIni = Carbon::now()->locale('id')->translatedFormat('l');
 
-        // Ambil jadwal kuliah hari ini
-        $jadwals = JadwalKuliah::with(['dosen', 'mataKuliah', 'kelas'])
-            ->where('hari', $hariIni)
-            ->get();
+        // Ambil jadwal kuliah mahasiswa berdasarkan hari ini
+        $jadwals = JadwalMahasiswa::with(['jadwalKuliah.dosen', 'jadwalKuliah.mataKuliah', 'jadwalKuliah.kelas'])
+            ->where('mahasiswa_id', $mahasiswa->id)
+            ->whereHas('jadwalKuliah', function ($query) use ($hariIni) {
+                $query->where('hari', $hariIni);
+            })
+            ->get()
+            ->pluck('jadwalKuliah');
 
-        // Kirim data ke view
         return view('mahasiswa.dashboard', compact(
             'totalMahasiswa',
             'totalDosen',
-            'totalMataKuliah',
             'totalKelas',
-            'jadwals',
-            'hariIni'
+            'totalMataKuliah',
+            'hariIni',
+            'jadwals'
         ));
     }
 }
